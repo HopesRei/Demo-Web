@@ -3,12 +3,89 @@
   <head>
     <meta charset="UTF-8">
     <title> </title>
-    <style>
+
+        <style>
+
+   .alig {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 30px 100px 30px 10px;
+      }
+      .stat {
+        margin-left: 10px;
+        font-size: 24px;
+      }
+      .titulo {
+        font-size: 36px;
+        font-weight: bold;
+      }
+    .retap{
+            border-collapse: " ";
+            
+            
+        
+    }
 
     </style>
 
+
+    <script>
+        let calificacion = prompt("Calificacion de Ana");
+        let calificacion2 = prompt("Calificacion de Berta");
+        let calificacion3 = prompt("Calificacion de Carolina");
+        let calificacion4 = prompt("Calificacion de Diana");
+        let calificacion5 = prompt("Calificacion de Elvira");
+        let calificacion6 = prompt("Calificacion de Fernanda");
+        let calificacion7 = prompt("Calificacion de Hortensia");
+        let calificacion8 = prompt("Calificacion de Iliana");
+        let calificacion9 = prompt("Calificacion de Jazmin");
+        let calificacion10 = prompt("Calificacion de Juan");
+
+        let Alumnos= " <th >Mis alumnos<th>";
+        let table = "<div class='alig'><span class='titulo'>Calificación</span><span class='stat'>Estadísticas</span></div>";
+        
+        table += "<table border='1px' class='retap'>";
+        table += "<tr><th>Nombre</th><th>Calificación</th></tr>";
+        table += "<tr><td>Ana</td><td>" + calificacion + "</td></tr>";
+        table += "<tr><td>Berta</td><td>" + calificacion2 + "</td></tr>";
+        table += "<tr><td>Carolina</td><td>" + calificacion3 + "</td></tr>";
+        table += "<tr><td>Diana</td><td>" + calificacion4 + "</td></tr>";
+        table += "<tr><td>Elvira</td><td>" + calificacion5 + "</td></tr>";
+        table += "<tr><td>Fernanda</td><td>" + calificacion6 + "</td></tr>";
+        table += "<tr><td>Hortensia</td><td>" + calificacion7 + "</td></tr>";
+        table += "<tr><td>Iliana</td><td>" + calificacion8 + "</td></tr>";
+        table += "<tr><td>Jazmin</td><td>" + calificacion9 + "</td></tr>";
+        table += "<tr><td>Juan</td><td>" + calificacion10 + "</td></tr>";
+
+        document.write(table);
+
+    function promedio()
+    {
+        let suma = parseInt(calificacion) + parseInt(calificacion2) + parseInt(calificacion3) + parseInt(calificacion4) + parseInt(calificacion5) + parseInt(calificacion6) + parseInt(calificacion7) + parseInt(calificacion8) + parseInt(calificacion9) + parseInt(calificacion10);
+        let promedio = suma / 10;
+        document.write(promedio);
+    } 
+
+    function mejorcalf()
+    { 
+
+    }
+     
+        function peorcalf()
+    { 
+
+    }
+    let stats = "<table border='1px'>";
+        stats += "<tr><td> Promedio </tr></td> <tr><td>" +promedio() + "</tr></td>";
+        stats += "<tr><td> Peor Calificacion </tr></td> <tr><td>" + promedio() + "</tr></td>";
+        stats += "<tr><td> Mejor Calificacion </tr></td> <tr><td>" + promedio() + "</tr></td> </table>";
+    document.write(stats);
+
+    </script>
+
+♦
     </head>
     <body>
-        <h1>Calificación</h1>
     </body>
 </html>
