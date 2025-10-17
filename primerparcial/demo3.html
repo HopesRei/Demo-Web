@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+
+<script>
+        const admi = 500;
+        let desc = .20;
+        
+        let hombres = prompt("Cuantos hombres hay?");
+        let mujeres = prompt("Cuantas mujeres hay?");
+        let ladiesnight = prompt("Es ladies night?");
+        
+        let ln = ladiesnight;
+        if (ladiesnight == "true" || ladiesnight == "si" || ladiesnight == "1")
+        {
+            ln = true;
+        }
+        else{
+            ln = false;
+        }
+
+    let form;
+    if(ln){
+        form = (hombres*admi) + (mujeres *(admi *desc));
+    }
+    else{
+        form = (hombres*admi) + (mujeres *admi);
+    }
+    
+    document.write("Se tiene que pagar un total de: " + form);
+
+</script>

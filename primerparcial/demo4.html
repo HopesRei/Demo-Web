@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+<script>
+
+    const L= 2.5;
+    const gr = 10;
+    const piezas = 100;
+    let ext = (L * L);
+    let arcir = Math.PI * Math.pow((L/2), 2);
+    
+    let s = (3*ext) - arcir;
+    s = s.toFixed(2);
+    let d = (s * gr * piezas)/1000;
+    document.write("Se necesita un total de " + d + " KG de chocolate");
+
+</script>
