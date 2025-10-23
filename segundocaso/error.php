@@ -80,7 +80,7 @@ else {
 	<div class="cajita">
 		<h1>Error</h1>
 		<h2><?php echo $descripcion; ?></h2>
-		<a href="loging.php" class="boton-regresar">regresar</a>
+		<a href="login.php" class="boton-regresar">regresar</a>
 	</div>
 </body>
 </html>
