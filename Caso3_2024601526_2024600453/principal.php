@@ -126,10 +126,7 @@ case 'productos':
   if (isset($_POST['delete_producto'])) {
     $id = intval($_POST['id_producto']);
     if ($id > 0) {
-        // Primero elimina cualquier referencia en inventario
         $mysqli->query("DELETE FROM inventario WHERE producto_ID = $id");
-
-        // Luego elimina el producto
         if ($mysqli->query("DELETE FROM productos WHERE ID_Producto = $id")) {
             echo "<p style='color:green;text-align:center;'>🗑️ Producto y su inventario eliminados correctamente.</p>";
         } else {
@@ -163,7 +160,6 @@ case 'productos':
     } else echo "<p>No hay productos.</p>";
     echo '</div>';
 
-    // FORMULARIO DE AGREGAR Y GESTIONAR
     echo '<div style="
         background:#f7f7f7;border:1px solid #aaa;border-radius:8px;padding:20px;
         box-shadow:2px 2px 5px rgba(0,0,0,0.2);margin-left:150px;width:350px;">
@@ -212,6 +208,29 @@ case 'inventario':
     break;
 
 //._. ya me cayo gordo el inner join
+  case 'proveedores':
+        echo '<h2 style="margin-top:0px; text-align:center;">Proveedores</h2>';
+        $sql = "SELECT ID_Proveedor, nombre, telefono FROM proveedores ORDER BY ID_Proveedor";
+        $result = $mysqli->query($sql);
+        if ($result && $result->num_rows > 0) {
+            echo '<table border="1" cellpadding="6" style="margin: 200px auto; border-collapse: collapse; width: 70%;">';
+            echo '<tr><th>ID</th><th>Nombre</th><th>Teléfono</th></tr>';
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['ID_Proveedor']}</td>
+                        <td>{$row['nombre']}</td>
+                        <td>{$row['telefono']}</td>
+                      </tr>";
+            }
+            echo '</table>';
+        } else {
+            echo '<p style="text-align:center;">No hay proveedores registrados.</p>';
+        echo "</table>";
+        }
+    echo '</div>';
+    break;
+
+
 case 'compras':
     echo '<h2 style=" margin-left:890px; margin-top:200px; text-align:center;">💸 Compras</h2>';
 
