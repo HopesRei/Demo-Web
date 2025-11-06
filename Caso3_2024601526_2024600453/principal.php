@@ -1,6 +1,6 @@
 <?php
 
-
+//sesion existe 
 session_start(); 
 
 if (!isset($_SESSION['usuario'])) {
@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if (isset($_POST['logout'])) {
+    //la mandas al cuerno
     session_start();
     session_unset();
     session_destroy();
@@ -148,7 +149,7 @@ if (isset($_POST['logout'])) {
             background-color: #94dbf7ff;
             font-weight: bold;
         }
-
+        /*al menos funciona*/
         .removeBg {
         filter: brightness(1.1);
          mix-blend-mode: normal;
@@ -170,6 +171,8 @@ if (isset($_POST['logout'])) {
     <input type="submit" name="action" value="📞 Contacto" class="maintype">
 </form>
 
+<!-- Cuidado con los espacios -->
+
 
 
 <?php
@@ -178,11 +181,11 @@ switch ($page) {
     case 'productos':
         echo "<h2 style='margin-top:120px; text-align:center;'>Productos</h2>";
 
-       
+       //sino fuera por la estrutuctura preferiria else if
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_producto'])) {
             $nombre = trim($_POST['nombre'] ?? '');
             $precio = floatval($_POST['precio'] ?? 0);
-            $estatus = 1; // por defecto activo
+            $estatus = 1; 
 
             if ($nombre !== '' && $precio > 0) {
                 $stmt = $mysqli->prepare("INSERT INTO productos (nombre, precio, estatus) VALUES (?, ?, ?)");
@@ -219,7 +222,7 @@ switch ($page) {
             echo "<p>No hay productos.</p>";
         }
         echo '</div>';
-
+//aburrido
 echo '<div style="
         background:#f7f7f7;
         border:1px solid #aaa;
@@ -269,7 +272,7 @@ echo '<div style="
             echo '<p style="text-align:center;">No hay productos en inventario.</p>';
         }
         break;
-
+//repetimos
     case 'proveedores':
         echo '<h2 style="margin-top:0px; text-align:center;">Proveedores</h2>';
         $sql = "SELECT ID_Proveedor, nombre, telefono FROM proveedores ORDER BY ID_Proveedor";
@@ -289,7 +292,7 @@ echo '<div style="
             echo '<p style="text-align:center;">No hay proveedores registrados.</p>';
         }
         break;
-
+//._. ya me cayo gordo el inner join
 case 'compras':
     echo '<h2 style=" margin-left:890px; margin-top:200px; text-align:center;">💸 Compras</h2>';
 
@@ -307,7 +310,7 @@ case 'compras':
                 $nombre = $mysqli->real_escape_string($prod['nombre']);
                 $precio = (float)$prod['precio'];
                 $costo = $precio * $cantidad;
-                $fecha = date('Y-m-d');
+                $fecha = date('Y-m-d'); //F 
 
                 $insert = $mysqli->query("
                     INSERT INTO facturas (fecha, producto, cantidad, costo)
@@ -351,7 +354,7 @@ case 'compras':
             text-align:center;
         ">
             <h3 style="margin-bottom:25px; font-size:22px;">📦 Realizar una orden</h3>';
-
+//copia
     
     $productos = $mysqli->query("SELECT ID_Producto, nombre FROM productos ORDER BY nombre");
     echo '
@@ -388,7 +391,7 @@ case 'compras':
     case 'facturas':
     echo '<h2 style="margin-top:20px; text-align:center;">📄 Facturas registradas</h2>';
 
-    // Consultar facturas
+    // Consultamos
     $sql = "SELECT ID_Factura, fecha, producto, cantidad, costo FROM facturas ORDER BY ID_Factura DESC";
     $result = $mysqli->query($sql);
 
@@ -428,7 +431,7 @@ case 'compras':
     }
     break;
 
-
+//ahuevo descansito
 case 'reportes':
     echo "<div style='text-align:center; margin-top:100px; '>";
     echo "<img src='under.png' class='removeBg' alt='Reportes en construcción' style='display:block; margin:0 auto; margin-left: 700px; margin-bottom:100px; width:500px;'>";
@@ -459,8 +462,10 @@ echo "<div style='text-align:center; margin-left: 700px; margin-bottom:100px;'>"
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 9999;
+    z-index: 9999; 
 ">
+    <!-- z-index para apilar cosas o textos, da menos hueva q ir uno por uno-->
+    <!-- gap para el espacio entre cosas -->
    
     <form action="login_tiendita.php" method="GET" style="margin:0;">
         <button type="submit" 
@@ -471,7 +476,6 @@ echo "<div style='text-align:center; margin-left: 700px; margin-bottom:100px;'>"
         </button>
     </form>
 
-    <!-- Botón Cerrar sesión -->
     <form method="POST" action="" style="margin:0;">
         <input type="hidden" name="logout" value="1">
         <button type="submit" 

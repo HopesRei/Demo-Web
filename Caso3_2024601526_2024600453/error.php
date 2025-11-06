@@ -2,10 +2,10 @@
 $descripcion = "";
 
 if (isset($_GET['error'])) {
-	$descripcion = "El usuario o la contraseña son incorrectos. Inténtalo de nuevo.";
+	$descripcion = "ERROR 500:El usuario o la contraseña son incorrectos. Inténtalo de nuevo.";
 } 
 else {
-	$descripcion = "No se recibió ninguna descripción de error.";
+	$descripcion = "ERROR 404:No se recibió ninguna descripción de error.";
 }
 ?>
 <!DOCTYPE html>
