@@ -1,14 +1,9 @@
 <?php
-
-//sesion existe 
 session_start(); 
-
 if (!isset($_SESSION['usuario'])) {
     header('Location: login_tiendita.php');
     exit;
 }
-
-
 
 $page = 'home';
 $host = '127.0.0.1';
@@ -17,8 +12,6 @@ $user = 'root';
 $pass = 'root';
 
 $mysqli = new mysqli($host, $user, $pass, $db);
-
-// Verificar conexión
 if ($mysqli->connect_error) {
     die('Error de conexión: ' . htmlspecialchars($mysqli->connect_error));
 }
@@ -26,142 +19,80 @@ if ($mysqli->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
-            case '📖 Productos':
-                $page = 'productos';
-                break;
-            case '📦 Inventario':
-                $page = 'inventario';
-                break;
-            case '👥 Proveedores':
-                $page = 'proveedores';
-                break;
-            case '💸 Compras':
-                $page = 'compras';
-                break;
-            case '📄 Facturas':
-                $page = 'facturas';
-                break;
-            case '📶 Reportes':
-                $page = 'reportes';
-                break;
-            case '📞 Contacto':
-                $page = 'contacto';
-                break;
-            default:
-                $page = 'home';
+            case '📖 Productos': $page = 'productos'; break;
+            case '📦 Inventario': $page = 'inventario'; break;
+            case '👥 Proveedores': $page = 'proveedores'; break;
+            case '💸 Compras': $page = 'compras'; break;
+            case '📄 Facturas': $page = 'facturas'; break;
+            case '📶 Reportes': $page = 'reportes'; break;
+            case '📞 Contacto': $page = 'contacto'; break;
+            default: $page = 'home';
         }
-    } 
-    elseif (isset($_POST['ordenar'])) {
+    } elseif (isset($_POST['ordenar'])) {
         $page = 'compras';
-    } 
-    elseif (isset($_POST['add_producto'])) {
+    } elseif (isset($_POST['add_producto']) || isset($_POST['delete_producto']) || isset($_POST['reduce_stock'])) {
         $page = 'productos';
     }
-
 }
 
-
 if (isset($_POST['logout'])) {
-    //la mandas al cuerno
-    session_start();
     session_unset();
     session_destroy();
-    if (isset($_COOKIE['remember_user'])) {
-        setcookie('remember_user', '', time() - 3600, '/');
-    }
-    if (isset($_COOKIE['auto_user'])) {
-        setcookie('auto_user', '', time() - 3600, '/');
-    }
-
-    
+    setcookie('remember_user', '', time() - 3600, '/');
+    setcookie('auto_user', '', time() - 3600, '/');
     header('Location: login_tiendita.php');
     exit;
 }
-
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Pantalla de Bienvenida</title>
-	<style>
-		body {
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			height: 100vh;
-			margin: 0;
-			flex-direction: column;
-            background-color: lavenderblush;
-            background-image: url('dulces.jpeg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-		}
-		.fakebox {
-			border: 2px solid black;
-			width: 1800px;
-			height: 80px;
-			box-sizing: border-box;
-			top: 10px; 
-			position: absolute;
-			display: flex;
-			align-items: center;
-            margin-left: 40px;
-		}
-		.maintype {
-			padding: 10px 5px; 
-			margin-left: 80px;
-			border: 3px solid black; 
-			background-color: white; 
-			cursor: pointer; 
-			font-size: 25px;
-		}
-		.maintype:hover,
-		.maintype:focus {
-			background-color: #fffa8b;
-			transform: scale(1.03);
-		}
-		form.top-center {
-			position: absolute;
-			top: 20px; 
-			display: flex;
-			flex-direction: row;
-			gap: 5px;  
-			align-items: center;
-		}
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-		table, th, td {
-			border: 2x solid black;
-			padding: 8px;
-			text-align: center;
-		}
-		th {
-			background-color: #f75b5bff;
-		}
-
-        td {
-            background-color: #94dbf7ff;
-            font-weight: bold;
-        }
-        /*al menos funciona*/
-        .removeBg {
-        filter: brightness(1.1);
-         mix-blend-mode: normal;
-        }
-		
-	</style>
+<meta charset="utf-8">
+<title>Pantalla de Bienvenida</title>
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    background-color: lavenderblush;
+    background-image: url('dulces.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.fakebox {
+    border: 2px solid black;
+    width: 1800px;
+    height: 80px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    margin-bottom: 720px;
+    margin-left: 40px;
+}
+.maintype {
+    padding: 10px 5px; 
+    margin-left: 80px;
+    border: 3px solid black; 
+    background-color: white; 
+    cursor: pointer; 
+    font-size: 25px;
+}
+.maintype:hover { background-color: #fffa8b; transform: scale(1.03); }
+table { border-collapse: collapse; width: 100%; }
+table, th, td { border: 2px solid black; padding: 8px; text-align: center; }
+th { background-color: #f75b5bff; }
+td { background-color: #94dbf7ff; font-weight: bold; }
+.removeBg { filter: brightness(1.1); mix-blend-mode: normal; }
+</style>
 </head>
 <body>
 
 <div class="fakebox"></div>
-
-<form method="POST" action="" class="top-center">
+<form method="POST" class="top-center" style="position:absolute;top:20px;display:flex;gap:5px;">
     <input type="submit" name="action" value="📖 Productos" class="maintype">
     <input type="submit" name="action" value="📦 Inventario" class="maintype">
     <input type="submit" name="action" value="👥 Proveedores" class="maintype">
@@ -171,127 +102,115 @@ if (isset($_POST['logout'])) {
     <input type="submit" name="action" value="📞 Contacto" class="maintype">
 </form>
 
-<!-- Cuidado con los espacios -->
-
-
-
 <?php
 switch ($page) {
 
-    case 'productos':
-        echo "<h2 style='margin-top:120px; text-align:center;'>Productos</h2>";
+case 'productos':
+    echo "<h2 style='margin-top:120px; text-align:center;'>Productos</h2>";
 
-       //sino fuera por la estrutuctura preferiria else if
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_producto'])) {
-            $nombre = trim($_POST['nombre'] ?? '');
-            $precio = floatval($_POST['precio'] ?? 0);
-            $estatus = 1; 
+    // AGREGAR PRODUCTO
+    if (isset($_POST['add_producto'])) {
+        $nombre = trim($_POST['nombre'] ?? '');
+        $precio = floatval($_POST['precio'] ?? 0);
+        $estatus = 1; 
+        if ($nombre !== '' && $precio > 0) {
+            $stmt = $mysqli->prepare("INSERT INTO productos (nombre, precio, estatus) VALUES (?, ?, ?)");
+            $stmt->bind_param("sdi", $nombre, $precio, $estatus);
+            if ($stmt->execute()) echo "<p style='color:green;text-align:center;'>✅ Producto agregado correctamente.</p>";
+            else echo "<p style='color:red;text-align:center;'>❌ Error: {$stmt->error}</p>";
+            $stmt->close();
+        } else echo "<p style='color:red;text-align:center;'>⚠️ Campos inválidos.</p>";
+    }
 
-            if ($nombre !== '' && $precio > 0) {
-                $stmt = $mysqli->prepare("INSERT INTO productos (nombre, precio, estatus) VALUES (?, ?, ?)");
-                $stmt->bind_param("sdi", $nombre, $precio, $estatus);
-                if ($stmt->execute()) {
-                    echo "<p style='color:green; text-align:center;'>✅ Producto agregado correctamente.</p>";
-                } else {
-                    echo "<p style='color:red; text-align:center;'>❌ Error al agregar producto: {$stmt->error}</p>";
-                }
-                $stmt->close();
-            } else {
-                echo "<p style='color:red; text-align:center;'>⚠️ Debes llenar todos los campos correctamente.</p>";
-            }
-        }
+    // ELIMINAR PRODUCTO
+  if (isset($_POST['delete_producto'])) {
+    $id = intval($_POST['id_producto']);
+    if ($id > 0) {
+        // Primero elimina cualquier referencia en inventario
+        $mysqli->query("DELETE FROM inventario WHERE producto_ID = $id");
 
-        
-        echo '<div style="display:flex; align-items:flex-start; margin-top:30px;">';
-
-        
-        echo '<div style="margin-left:300px; margin-bottom: 300px">';
-        $sql = "SELECT ID_Producto AS id, nombre, precio FROM productos ORDER BY id";
-        $result = $mysqli->query($sql);
-        if ($result && $result->num_rows > 0) {
-            echo "<table border='1' cellpadding='8' cellspacing='0' style='border-collapse:collapse;'>";
-            echo "<tr><th>ID</th><th>Nombre</th><th>Precio</th></tr>";
-            while ($row = $result->fetch_assoc()) {
-                $id = htmlspecialchars($row['id']);
-                $nombre = htmlspecialchars($row['nombre']);
-                $precio = number_format((float)$row['precio'], 2);
-                echo "<tr><td>$id</td><td>$nombre</td><td>$$precio</td></tr>";
-            }
-            echo "</table>";
+        // Luego elimina el producto
+        if ($mysqli->query("DELETE FROM productos WHERE ID_Producto = $id")) {
+            echo "<p style='color:green;text-align:center;'>🗑️ Producto y su inventario eliminados correctamente.</p>";
         } else {
-            echo "<p>No hay productos.</p>";
+            echo "<p style='color:red;text-align:center;'>❌ Error al eliminar: {$mysqli->error}</p>";
         }
-        echo '</div>';
-//aburrido
-echo '<div style="
-        background:#f7f7f7;
-        border:1px solid #aaa;
-        border-radius:8px;
-        padding:20px;
-        box-shadow:2px 2px 5px rgba(0,0,0,0.2);
-        margin-left:150px;
-        width:300px;
-    ">
-    <h3>Agregar nuevo producto</h3>
-    <form method="POST" action="">
-        <input type="hidden" name="action" value="F1 Productos">
-        <label>Nombre del producto:</label><br>
-        <input type="text" name="nombre" required style="width:100%;"><br><br>
-        <label>Precio:</label><br>
-        <input type="number" step="0.01" name="precio" required style="width:100%;"><br><br>
-        <button type="submit" name="add_producto" style="padding:10px 20px; font-size:16px;">Agregar producto</button>
-    </form>
-</div>';
+    }
+}
 
 
-
-        echo '</div>'; 
-        break;
-
-  
-    case 'inventario':
-        echo '<h2 style="margin-top:0px; text-align:center;">Inventario</h2>';
-        $sql = "SELECT i.ID_Inventario, p.nombre AS producto, i.stock, i.ubicacion
-                FROM inventario i
-                JOIN productos p ON i.producto_ID = p.ID_Producto
-                ORDER BY i.ID_Inventario";
-        $result = $mysqli->query($sql);
-        if ($result && $result->num_rows > 0) {
-            echo '<table border="1" cellpadding="6" style="margin: 200px auto; border-collapse: collapse; width: 70%;">';
-            echo '<tr><th>ID Inventario</th><th>Producto</th><th>Stock</th><th>Ubicación</th></tr>';
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['ID_Inventario']}</td>
-                        <td>{$row['producto']}</td>
-                        <td>{$row['stock']}</td>
-                        <td>{$row['ubicacion']}</td>
-                      </tr>";
-            }
-            echo '</table>';
-        } else {
-            echo '<p style="text-align:center;">No hay productos en inventario.</p>';
+    // REDUCIR STOCK
+    if (isset($_POST['reduce_stock'])) {
+        $id = intval($_POST['id_producto']);
+        $cantidad = intval($_POST['cantidad_reducir']);
+        if ($id > 0 && $cantidad > 0) {
+            $mysqli->query("UPDATE inventario SET stock = GREATEST(stock - $cantidad, 0) WHERE producto_ID = $id");
+            echo "<p style='color:orange;text-align:center;'>⚙️ Stock reducido correctamente.</p>";
         }
-        break;
-//repetimos
-    case 'proveedores':
-        echo '<h2 style="margin-top:0px; text-align:center;">Proveedores</h2>';
-        $sql = "SELECT ID_Proveedor, nombre, telefono FROM proveedores ORDER BY ID_Proveedor";
-        $result = $mysqli->query($sql);
-        if ($result && $result->num_rows > 0) {
-            echo '<table border="1" cellpadding="6" style="margin: 200px auto; border-collapse: collapse; width: 70%;">';
-            echo '<tr><th>ID</th><th>Nombre</th><th>Teléfono</th></tr>';
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['ID_Proveedor']}</td>
-                        <td>{$row['nombre']}</td>
-                        <td>{$row['telefono']}</td>
-                      </tr>";
-            }
-            echo '</table>';
-        } else {
-            echo '<p style="text-align:center;">No hay proveedores registrados.</p>';
+    }
+
+    echo '<div style="display:flex;align-items:flex-start;margin-top:30px;">';
+
+    // TABLA DE PRODUCTOS
+    echo '<div style="margin-left:300px;margin-bottom:300px">';
+    $result = $mysqli->query("SELECT ID_Producto AS id, nombre, precio FROM productos ORDER BY id");
+    if ($result && $result->num_rows > 0) {
+        echo "<table border='1' cellpadding='8'><tr><th>ID</th><th>Nombre</th><th>Precio</th></tr>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr><td>{$row['id']}</td><td>{$row['nombre']}</td><td>$".number_format($row['precio'],2)."</td></tr>";
         }
-        break;
+        echo "</table>";
+    } else echo "<p>No hay productos.</p>";
+    echo '</div>';
+
+    // FORMULARIO DE AGREGAR Y GESTIONAR
+    echo '<div style="
+        background:#f7f7f7;border:1px solid #aaa;border-radius:8px;padding:20px;
+        box-shadow:2px 2px 5px rgba(0,0,0,0.2);margin-left:150px;width:350px;">
+        <h3>Agregar nuevo producto</h3>
+        <form method="POST">
+            <label>Nombre del producto:</label><br>
+            <input type="text" name="nombre" required style="width:100%;"><br><br>
+            <label>Precio:</label><br>
+            <input type="number" step="0.01" name="precio" required style="width:100%;"><br><br>
+            <button type="submit" name="add_producto" style="padding:10px 20px;">Agregar producto</button>
+        </form>
+        <hr style="margin:20px 0;">
+        <h3>Gestionar producto</h3>
+        <form method="POST" style="margin-bottom:15px;">
+            <label>ID del producto:</label><br>
+            <input type="number" name="id_producto" required style="width:100%;"><br><br>
+            <button type="submit" name="delete_producto" style="background:#d32f2f;color:white;padding:8px 15px;border:none;border-radius:5px;">Eliminar producto</button>
+        </form>
+        <form method="POST">
+            <label>ID del producto:</label><br>
+            <input type="number" name="id_producto" required style="width:100%;"><br><br>
+            <label>Cantidad a reducir:</label><br>
+            <input type="number" name="cantidad_reducir" min="1" required style="width:100%;"><br><br>
+            <button type="submit" name="reduce_stock" style="background:#ffa000;color:white;padding:8px 15px;border:none;border-radius:5px;">Reducir stock</button>
+        </form>
+    </div>';
+
+    echo '</div>';
+    break;
+
+// INVENTARIO
+case 'inventario':
+    echo '<h2 style="text-align:center;">Inventario</h2>';
+    $sql = "SELECT i.ID_Inventario, p.nombre AS producto, i.stock, i.ubicacion
+            FROM inventario i JOIN productos p ON i.producto_ID = p.ID_Producto
+            ORDER BY i.ID_Inventario";
+    $result = $mysqli->query($sql);
+    if ($result && $result->num_rows > 0) {
+        echo '<table border="1" cellpadding="6" style="margin: 200px auto; width: 70%;">';
+        echo '<tr><th>ID Inventario</th><th>Producto</th><th>Stock</th><th>Ubicación</th></tr>';
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr><td>{$row['ID_Inventario']}</td><td>{$row['producto']}</td><td>{$row['stock']}</td><td>{$row['ubicacion']}</td></tr>";
+        }
+        echo '</table>';
+    } else echo '<p style="text-align:center;">No hay productos en inventario.</p>';
+    break;
+
 //._. ya me cayo gordo el inner join
 case 'compras':
     echo '<h2 style=" margin-left:890px; margin-top:200px; text-align:center;">💸 Compras</h2>';
