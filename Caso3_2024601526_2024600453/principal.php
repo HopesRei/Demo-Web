@@ -1,9 +1,4 @@
 <?php
-session_start(); 
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login_tiendita.php');
-    exit;
-}
 
 $page = 'home';
 $host = '127.0.0.1';
@@ -35,14 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if (isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    setcookie('remember_user', '', time() - 3600, '/');
-    setcookie('auto_user', '', time() - 3600, '/');
-    header('Location: login_tiendita.php');
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html>
